@@ -20,15 +20,21 @@ export const PriceSnapshotTool = makeAssistantToolUI<
 >({
   toolName: "price_snapshot",
   render: function PriceSnapshotUI({ part: { args, argsText, result } }) {
-    const resultObj = result
-      ? (JSON.parse(result) as PriceSnapshotToolResult)
-      : undefined;
+    let resultObj: PriceSnapshotToolResult | { error: string };
+    try {
+      resultObj = result ? JSON.parse(result) : undefined;
+    } catch (e) {
+      resultObj = { error: result! };
+    }
 
     return (
       <div className="mb-4 flex flex-col items-center gap-2">
         <pre className="whitespace-pre-wrap">price_snapshot({argsText})</pre>
-        {resultObj && (
+        {"snapshot" in resultObj && (
           <PriceSnapshot ticker={args.ticker} {...resultObj.snapshot} />
+        )}
+        {"error" in resultObj && (
+          <p className="text-red-500">{resultObj.error}</p>
         )}
       </div>
     );

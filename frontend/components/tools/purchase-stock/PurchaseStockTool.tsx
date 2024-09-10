@@ -26,9 +26,7 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
       status,
       addResult,
     }) {
-      const resultObj = result
-        ? (JSON.parse(result) as { transactionId: string })
-        : undefined;
+      const hasResult = !!result;
 
       const { useThread } = useThreadContext();
 
@@ -44,15 +42,15 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
       return (
         <div className="mb-4 flex flex-col items-center gap-2">
           <pre className="whitespace-pre-wrap">purchase_stock({argsText})</pre>
-          {!resultObj && status.type !== "running" && (
+          {!hasResult && status.type !== "running" && (
             <TransactionConfirmationPending
               {...args}
               onConfirm={handleConfirm}
             />
           )}
-          {resultObj && <TransactionConfirmationFinal {...args} />}
+          {hasResult && <TransactionConfirmationFinal {...args} />}
         </div>
       );
     },
-  },
+  }
 );
