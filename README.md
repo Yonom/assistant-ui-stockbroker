@@ -18,9 +18,7 @@ The stockbroker agent is publicly accessible through two interfaces:
 2. Web-based Chat Interface:
 > To go along with the API, we've also deployed this web-based chat interface for the stockbroker agent.
 >
-> You can access, and interact with it [here](https://stockbrokeragent-bracesprouls-projects.vercel.app).
-
-## [YouTube Video](https://youtu.be/td7qNK8_H-0)
+> You can access, and interact with it [here](https://assistant-ui-langgraph.vercel.app).
 
 ## Setup
 
