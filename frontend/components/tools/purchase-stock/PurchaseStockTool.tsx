@@ -28,15 +28,8 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
     }) {
       const hasResult = !!result;
 
-      const { useThread } = useThreadContext();
-
       const handleConfirm = async () => {
-        await updateState(useThread.getState().threadId, {
-          newState: CONFIRM_PURCHASE,
-          asNode: PREPARE_PURCHASE_DETAILS_NODE,
-        });
-
-        addResult({ confirmed: true });
+        addResult({ approve: true });
       };
 
       return (

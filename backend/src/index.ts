@@ -7,7 +7,11 @@ import {
   NodeInterrupt,
   MessagesAnnotation,
 } from "@langchain/langgraph";
-import { BaseMessage, type AIMessage } from "@langchain/core/messages";
+import {
+  BaseMessage,
+  ToolMessage,
+  type AIMessage,
+} from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
 import {
   priceSnapshotTool,
@@ -20,7 +24,6 @@ import { z } from "zod";
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
   requestedStockPurchaseDetails: Annotation<StockPurchase>,
-  purchaseConfirmed: Annotation<boolean | undefined>,
 });
 
 const llm = new ChatOpenAI({
@@ -173,22 +176,63 @@ const preparePurchaseDetails = async (state: typeof GraphAnnotation.State) => {
   };
 };
 
-const executePurchase = async (state: typeof GraphAnnotation.State) => {
-  const { purchaseConfirmed, requestedStockPurchaseDetails } = state;
-  if (!requestedStockPurchaseDetails) {
-    throw new Error("Expected requestedStockPurchaseDetails to be present");
+const purchaseApproval = async (state: typeof GraphAnnotation.State) => {
+  const { messages } = state;
+  const lastMessage = messages[messages.length - 1];
+  if (!(lastMessage instanceof ToolMessage)) {
+    // Interrupt the node to request permission to execute the purchase.
+    throw new NodeInterrupt("Please confirm the purchase before executing.");
   }
-  if (!purchaseConfirmed) {
+};
+
+const shouldExecute = (state: typeof GraphAnnotation.State) => {
+  const { messages } = state;
+  const lastMessage = messages[messages.length - 1];
+  if (!(lastMessage instanceof ToolMessage)) {
     // Interrupt the node to request permission to execute the purchase.
     throw new NodeInterrupt("Please confirm the purchase before executing.");
   }
 
-  const { ticker, quantity, maxPurchasePrice } = requestedStockPurchaseDetails;
+  const { approve } = JSON.parse(lastMessage.content as string);
+  return approve ? "execute_purchase" : "agent";
+};
+
+const executePurchase = async (state: typeof GraphAnnotation.State) => {
+  const { requestedStockPurchaseDetails } = state;
+  if (!requestedStockPurchaseDetails) {
+    throw new Error("Expected requestedStockPurchaseDetails to be present");
+  }
+
   // Execute the purchase. In this demo we'll just return a success message.
+  const { ticker, quantity, maxPurchasePrice } = requestedStockPurchaseDetails;
+
+  const toolCallId = "tool_" + Math.random().toString(36).substring(2);
   return {
     messages: [
       {
-        role: "assistant",
+        type: "ai",
+        tool_calls: [
+          {
+            name: "execute_purchase",
+            id: toolCallId,
+            args: {
+              ticker,
+              quantity,
+              maxPurchasePrice,
+            },
+          },
+        ],
+      },
+      {
+        type: "tool",
+        name: "execute_purchase",
+        tool_call_id: toolCallId,
+        content: JSON.stringify({
+          success: true,
+        }),
+      },
+      {
+        type: "ai",
         content:
           `Successfully purchased ${quantity} share(s) of ` +
           `${ticker} at $${maxPurchasePrice}/share.`,
@@ -202,15 +246,19 @@ const workflow = new StateGraph(GraphAnnotation)
   .addEdge(START, "agent")
   .addNode("tools", toolNode)
   .addNode("prepare_purchase_details", preparePurchaseDetails)
+  .addNode("purchase_approval", purchaseApproval)
   .addNode("execute_purchase", executePurchase)
-  .addEdge("prepare_purchase_details", "execute_purchase")
+  .addEdge("prepare_purchase_details", "purchase_approval")
   .addEdge("execute_purchase", END)
   .addEdge("tools", "agent")
+  .addConditionalEdges("purchase_approval", shouldExecute, [
+    "agent",
+    "execute_purchase",
+  ])
   .addConditionalEdges("agent", shouldContinue, [
     "tools",
     END,
     "prepare_purchase_details",
-    "execute_purchase",
   ]);
 
 export const graph = workflow.compile({
