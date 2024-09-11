@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@assistant-ui/react": "^0.5.51",
-    "@assistant-ui/react-langgraph": "^0.0.4",
+    "@assistant-ui/react-langgraph": "^0.0.5",
     "@assistant-ui/react-markdown": "^0.2.12",
     "@langchain/langgraph-sdk": "^0.0.8",
     "@radix-ui/react-slot": "^1.1.0",

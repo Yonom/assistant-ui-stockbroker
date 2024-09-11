@@ -11,6 +11,13 @@ type PurchaseStockArgs = {
   quantity: number;
   maxPurchasePrice: number;
 };
+
+type PurchaseStockResult = {
+  approve?: boolean;
+  cancelled?: boolean;
+  error?: string;
+};
+
 // The JSON to update state with if the user confirms the purchase.
 const CONFIRM_PURCHASE = {
   purchaseConfirmed: true,
@@ -26,7 +33,12 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
       status,
       addResult,
     }) {
-      const hasResult = !!result;
+      let resultObj: PurchaseStockResult;
+      try {
+        resultObj = result ? JSON.parse(result) : {};
+      } catch (e) {
+        resultObj = { error: result! };
+      }
 
       const handleConfirm = async () => {
         addResult({ approve: true });
@@ -35,13 +47,16 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
       return (
         <div className="mb-4 flex flex-col items-center gap-2">
           <pre className="whitespace-pre-wrap">purchase_stock({argsText})</pre>
-          {!hasResult && status.type !== "running" && (
+          {!result && status.type !== "running" && (
             <TransactionConfirmationPending
               {...args}
               onConfirm={handleConfirm}
             />
           )}
-          {hasResult && <TransactionConfirmationFinal {...args} />}
+          {resultObj.approve && <TransactionConfirmationFinal {...args} />}
+          {resultObj.cancelled && (
+            <pre className="font-bold text-red-600">Cancelled</pre>
+          )}
         </div>
       );
     },
