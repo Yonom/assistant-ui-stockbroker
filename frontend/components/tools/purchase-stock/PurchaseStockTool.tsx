@@ -18,13 +18,6 @@ type PurchaseStockResult = {
   error?: string;
 };
 
-// The JSON to update state with if the user confirms the purchase.
-const CONFIRM_PURCHASE = {
-  purchaseConfirmed: true,
-};
-// The name of the node to update the state as
-const PREPARE_PURCHASE_DETAILS_NODE = "prepare_purchase_details";
-
 export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
   {
     toolName: "purchase_stock",
@@ -46,7 +39,11 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
 
       return (
         <div className="mb-4 flex flex-col items-center gap-2">
-          <pre className="whitespace-pre-wrap">purchase_stock({argsText})</pre>
+          <div>
+            <pre className="whitespace-pre-wrap whitespace-break-words text-center">
+              purchase_stock({argsText})
+            </pre>
+          </div>
           {!result && status.type !== "running" && (
             <TransactionConfirmationPending
               {...args}

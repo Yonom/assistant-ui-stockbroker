@@ -29,7 +29,9 @@ export const PriceSnapshotTool = makeAssistantToolUI<
 
     return (
       <div className="mb-4 flex flex-col items-center gap-2">
-        <pre className="whitespace-pre-wrap">price_snapshot({argsText})</pre>
+        <pre className="whitespace-pre-wrap whitespace-break-words text-center">
+          price_snapshot({argsText})
+        </pre>
         {"snapshot" in resultObj && (
           <PriceSnapshot ticker={args.ticker} {...resultObj.snapshot} />
         )}
