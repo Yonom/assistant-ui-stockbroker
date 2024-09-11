@@ -49,13 +49,13 @@ importers:
   frontend:
     dependencies:
       '@assistant-ui/react':
-        specifier: '*'
+        specifier: ^0.5.51
         version: 0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10)
       '@assistant-ui/react-langgraph':
-        specifier: '*'
-        version: 0.0.3(@assistant-ui/react@0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10))(@types/react@18.3.5)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)
+        specifier: ^0.0.4
+        version: 0.0.4(@assistant-ui/react@0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10))(@types/react@18.3.5)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)
       '@assistant-ui/react-markdown':
-        specifier: '*'
+        specifier: ^0.2.12
         version: 0.2.12(@assistant-ui/react@0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10))(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10)
       '@langchain/langgraph-sdk':
         specifier: ^0.0.8
@@ -129,8 +129,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@assistant-ui/react-langgraph@0.0.3':
-    resolution: {integrity: sha512-/Q5k7gVJXjz7Ma/dAB+mnA0vfn4ssAdLH/ALU6ZfPWPh2ZtsaqCEWaeWtIrK7r4Vo8bqZnm2wYkalVc6Z+yPew==}
+  '@assistant-ui/react-langgraph@0.0.4':
+    resolution: {integrity: sha512-2hsWEM7J1zOFgMUSzUFqzwh/tnn6xFOZ85VlwYV3QdggApSCZzTq6f1Z5wZ6t+hCDKgmZB6nUv1RcgOB7t0aXg==}
     peerDependencies:
       '@assistant-ui/react': ^0.5.51
       '@types/react': '*'
@@ -3341,7 +3341,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@assistant-ui/react-langgraph@0.0.3(@assistant-ui/react@0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10))(@types/react@18.3.5)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)':
+  '@assistant-ui/react-langgraph@0.0.4(@assistant-ui/react@0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10))(@types/react@18.3.5)(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@assistant-ui/react': 0.5.51(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.10)
       react: 18.3.1
