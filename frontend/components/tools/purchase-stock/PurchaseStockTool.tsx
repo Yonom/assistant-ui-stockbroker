@@ -22,7 +22,7 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
   {
     toolName: "purchase_stock",
     render: function PurchaseStockUI({
-      part: { args, argsText, result },
+      part: { args, result },
       status,
       addResult,
     }) {
@@ -33,6 +33,10 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
         resultObj = { error: result! };
       }
 
+      const handleReject = () => {
+        addResult({ cancelled: true });
+      };
+
       const handleConfirm = async () => {
         addResult({ approve: true });
       };
@@ -40,17 +44,21 @@ export const PurchaseStockTool = makeAssistantToolUI<PurchaseStockArgs, string>(
       return (
         <div className="mb-4 flex flex-col items-center gap-2">
           <div>
-            <pre className="whitespace-pre-wrap whitespace-break-words text-center">
-              purchase_stock({argsText})
+            <pre className="whitespace-pre-wrap break-all text-center">
+              purchase_stock({JSON.stringify(args)})
             </pre>
           </div>
           {!result && status.type !== "running" && (
             <TransactionConfirmationPending
               {...args}
               onConfirm={handleConfirm}
+              onReject={handleReject}
             />
           )}
           {resultObj.approve && <TransactionConfirmationFinal {...args} />}
+          {resultObj.approve === false && (
+            <pre className="font-bold text-red-600">User rejected purchase</pre>
+          )}
           {resultObj.cancelled && (
             <pre className="font-bold text-red-600">Cancelled</pre>
           )}

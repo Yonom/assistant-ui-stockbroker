@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, XIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +17,18 @@ type TransactionConfirmation = {
   quantity: number;
   maxPurchasePrice: number;
   onConfirm: () => void;
+  onReject: () => void;
 };
 
 export function TransactionConfirmationPending(props: TransactionConfirmation) {
-  const { ticker, companyName, quantity, maxPurchasePrice, onConfirm } = props;
+  const {
+    ticker,
+    companyName,
+    quantity,
+    maxPurchasePrice,
+    onConfirm,
+    onReject,
+  } = props;
 
   return (
     <Card className="mx-auto w-full max-w-md">
@@ -50,10 +58,10 @@ export function TransactionConfirmationPending(props: TransactionConfirmation) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end">
-        {/* <Button variant="outline" onClick={onReject}>
-          <X className="mr-2 h-4 w-4" />
+        <Button variant="outline" onClick={onReject}>
+          <XIcon className="mr-2 h-4 w-4" />
           Reject
-        </Button> */}
+        </Button>
         <Button onClick={onConfirm}>
           <CheckIcon className="mr-2 h-4 w-4" />
           Confirm

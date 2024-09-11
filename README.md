@@ -9,12 +9,13 @@ The backend contains a LangGraph agent which powers the core functionality of th
 The stockbroker agent is publicly accessible through two interfaces:
 
 1. API:
-> The Cloud API for the stockbroker agent is publicly accessible at the following base URL: `https://assistant-ui-langgraph.vercel.app/api`
+
+   > The Cloud API for the stockbroker agent is publicly accessible at the following base URL: `https://assistant-ui-stockbroker.vercel.app/api`
 
 2. Web-based Chat Interface:
-> To go along with the API, we've also deployed this web-based chat interface for the stockbroker agent.
->
-> You can access, and interact with it [here](https://assistant-ui-langgraph.vercel.app).
+   > To go along with the API, we've also deployed this web-based chat interface for the stockbroker agent.
+   >
+   > You can access, and interact with it [here](https://assistant-ui-stockbroker.vercel.app).
 
 ## Setup
 
@@ -61,7 +62,7 @@ Then, set the variables in a `.env` file inside [`./frontend`](./frontend):
 ```bash
 # Only required for production deployments
 # LANGCHAIN_API_KEY=YOUR_API_KEY
-NEXT_PUBLIC_API_URL=http://localhost:3000/api # Or your production URL + /api
+LANGGRAPH_API_URL=https://assistant-ui-stockbroker.vercel.app/api # Or your production URL
 NEXT_PUBLIC_LANGGRAPH_ASSISTANT_ID=stockbroker
 ```
 
